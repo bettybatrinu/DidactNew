@@ -47,9 +47,12 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    .main-card {padding: 1rem 1.2rem; border: 1px solid #E5E7EB; border-radius: 16px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);}
-    .hero-card {padding: 1rem; border-radius: 16px; background: linear-gradient(135deg, #F8FAFC 0%, #EEF2FF 100%); border: 1px solid #E5E7EB;}
+    .main-card {padding: 1rem 1.2rem; border: 1px solid #E5E7EB; border-radius: 16px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);}
+    .hero-card {padding: 1.2rem 1.25rem; border-radius: 18px; background: linear-gradient(135deg, #F8FAFC 0%, #EEF2FF 100%); border: 1px solid #E5E7EB;}
     .pill {display: inline-block; background: #EEF2FF; color: #3730A3; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600;}
+    .section-header {padding: 0.9rem 1rem; border-radius: 16px; background: #F8FAFC; border: 1px solid #E2E8F0; margin-bottom: 1rem;}
+    .card-title {font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;}
+    .info-chip {display: inline-block; margin-right: 0.5rem; margin-top: 0.4rem; padding: 0.3rem 0.7rem; border-radius: 999px; background: #EEF2FF; color: #0F172A; font-size: 0.85rem;}
     .small-muted {color: #64748B; font-size: 0.92rem;}
     .rubric-good {background: #ECFDF5; color: #065F46; padding: 0.15rem 0.45rem; border-radius: 999px; font-weight: 600;}
     .rubric-warn {background: #FEF3C7; color: #92400E; padding: 0.15rem 0.45rem; border-radius: 999px; font-weight: 600;}
@@ -106,58 +109,21 @@ except Exception as e:
 
 
 def render_tutor_exercise(row: dict, exercise_idx: int, key_prefix: str) -> None:
-    """Render the same tutor interaction used in the main demo."""
-    st.markdown("### Problemă")
-    st.markdown(f"<div class='main-card'>{row['Problema']}</div>", unsafe_allow_html=True)
-    st.caption(f"Etichetă dataset: {row.get('Domeniu', '—')} · {row.get('Tema_norm', '—')} · {row.get('Dificultate_group', '—')}")
-
-    student_answer = st.text_area(
-        "Răspunsul elevului",
-        placeholder="Scrie răspunsul aici",
-        key=f"{key_prefix}_answer",
+    """Render a recommended exercise card after the diagnostic."""
+    st.markdown("### Exercițiu recomandat")
+    st.markdown(
+        f"""
+        <div class='main-card'>
+          <div class='card-title'>Problemă recomandată</div>
+          <div>{row['Problema']}</div>
+          <div class='info-chip'>Domeniu: {row.get('Domeniu', '—')}</div>
+          <div class='info-chip'>Temă: {row.get('Tema_norm', '—')}</div>
+          <div class='info-chip'>Nivel: {row.get('Dificultate_group', '—')}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
-
-    col_a, col_b, col_c = st.columns(3)
-    with col_a:
-        time_seconds = st.number_input("Timp lucru (secunde)", min_value=5, max_value=3600, value=120, step=5, key=f"{key_prefix}_time")
-    with col_b:
-        attempts = st.number_input("Încercări", min_value=1, max_value=5, value=int(st.session_state.attempts), step=1, key=f"{key_prefix}_attempts")
-    with col_c:
-        hints_used = st.number_input("Indicii deja cerute", min_value=0, max_value=3, value=int(st.session_state.hints_used), step=1, key=f"{key_prefix}_hints")
-
-    hint = choose_hint(row["Problema"], row.get("Pasii de rezolvare", ""), st.session_state.mastery, hints_used)
-    with st.expander("Cere un indiciu gradual"):
-        st.write(f"**Tip indiciu:** {hint['hint_type']}")
-        st.write(hint["hint"])
-        if st.button("Am folosit un indiciu", key=f"{key_prefix}_hint_used"):
-            st.session_state.hints_used = min(3, int(hints_used) + 1)
-            st.rerun()
-
-    st.markdown("#### Întrebare de conștientizare")
-    q_idx = (int(exercise_idx) + int(hints_used)) % len(METACOGNITIVE_QUESTIONS)
-    st.info(METACOGNITIVE_QUESTIONS[q_idx])
-
-    if st.button("Evaluează răspunsul și recomandă următorul pas", key=f"{key_prefix}_evaluate", type="primary"):
-        result = evaluate_answer(student_answer, row["Raspunsul"])
-        learning_state = diagnose_learning_state(result["correct"], int(hints_used), int(attempts), int(time_seconds))
-        new_mastery = update_mastery(st.session_state.mastery, result["correct"], int(hints_used), int(attempts))
-        target = target_difficulty_from_mastery(new_mastery, result["correct"])
-        next_row = recommend_next_exercise(data, row["Domeniu"], target, exclude_problem=row["Problema"], random_state=int(exercise_idx) + 1)
-
-        st.session_state.mastery = new_mastery
-        st.session_state.attempts = attempts
-        st.session_state.hints_used = hints_used
-        st.success(result["feedback"] if result["correct"] else result["feedback"])
-        st.write(f"**Stare estimată:** {learning_state['state']}")
-        st.write(f"**Intervenție pedagogică:** {learning_state['intervention']}")
-        st.write(f"**Noua probabilitate de stăpânire:** {new_mastery:.2f}")
-        st.write(f"**Reactivare spaced repetition:** {next_review_date(new_mastery, result['correct'])}")
-        if next_row is not None and not getattr(next_row, "empty", True):
-            nr = next_row.iloc[0]
-            st.markdown("#### Recomandarea următoare")
-            st.write(f"Țintă: **{target}**, domeniu: **{row['Domeniu']}**")
-            st.markdown(f"<div class='main-card'>{nr['Problema']}</div>", unsafe_allow_html=True)
-            st.caption(f"{nr.get('Tema_norm', '—')} · {nr.get('Dificultate_group', '—')}")
+    st.info("Această recomandare este pregătită pentru tine. Continuă în fila „Tutor AI” pentru a rezolva exercițiul cu urmărire automată a timpului, indicilor și încercărilor.")
 
 
 # Fix dtypes after CSV load.
@@ -205,19 +171,38 @@ if ensure_neural_model_exists is not None:
 
 st.title("🧠 Didact AI")
 st.subheader("Un tutor de matematică clar, practic și adaptat progresului tău.")
-st.caption("Poți începe cu un diagnostic scurt, apoi primi exerciții potrivite acolo unde te blochezi cel mai mult.")
+st.caption("Pornește de la diagnostic, treci la exerciții relevante și urmărește progresul în timp.")
+
+st.markdown(
+    """
+    <div class='section-header'>
+      <strong>Ce face aplicația?</strong> Identifică rapid zonele în care ai nevoie de sprijin și îți oferă exerciții personalizate cu feedback imediat.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 hero = st.columns(3)
 with hero[0]:
-    st.markdown("<div class='hero-card'><span class='pill'>Pasul 1</span><br><strong>Diagnostic scurt</strong><br>Un set de întrebări simple care arată unde ai nevoie de sprijin.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='hero-card'><span class='pill'>Pasul 1</span><br><strong>Diagnostic scurt</strong><br>Începi cu întrebări simple care identifică ce ai de exersat.</div>", unsafe_allow_html=True)
 with hero[1]:
-    st.markdown("<div class='hero-card'><span class='pill'>Pasul 2</span><br><strong>Exerciții potrivite</strong><br>Sistemul recomandă teme relevante, nu exerciții arbitrare.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='hero-card'><span class='pill'>Pasul 2</span><br><strong>Exerciții potrivite</strong><br>Sistemul îți oferă exerciții aliniate cu nivelul tău.</div>", unsafe_allow_html=True)
 with hero[2]:
-    st.markdown("<div class='hero-card'><span class='pill'>Pasul 3</span><br><strong>Feedback clar</strong><br>Vezi ce ai făcut bine și unde merită să exersezi mai mult.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='hero-card'><span class='pill'>Pasul 3</span><br><strong>Feedback util</strong><br>Primești explicații și recomandări pentru următorul pas.</div>", unsafe_allow_html=True)
+
+metric_1, metric_2, metric_3, metric_4 = st.columns(4)
+with metric_1:
+    st.metric("Exerciții disponibile", report["dataset"]["rows_total"])
+with metric_2:
+    st.metric("Dificultate model", f"{report['structured_model']['model']['macro_f1']:.3f}")
+with metric_3:
+    st.metric("Domeniu model", f"{report['unstructured_model']['model']['macro_f1']:.3f}")
+with metric_4:
+    st.metric("Mastery inițial", f"{st.session_state.mastery:.2f}")
 
 st.markdown("---")
 st.markdown("### 🧭 Începe cu un diagnostic scurt")
-st.info("Nu trebuie să fii perfect. Scrie răspunsul cât poți și sistemul va sugera apoi exerciții pe zonele care merită mai multă practică.")
+st.info("Nu trebuie să fii perfect. Scrie răspunsul cât poți și sistemul va recomanda apoi exerciții pe zonele care merită mai multă practică.")
 
 if not st.session_state.diagnostic_started:
     st.caption("Acest pas te ajută să vezi rapid unde ai nevoie de sprijin, fără să te simți copleșit.")
@@ -447,33 +432,37 @@ with tabs[0]:
         st.caption(f"Etichetă dataset: {row['Domeniu']} · {row['Tema_norm']} · {row['Dificultate_group']}")
 
         student_answer = st.text_input("Răspunsul elevului", placeholder="Scrie răspunsul aici")
-        col_a, col_b, col_c = st.columns(3)
-        with col_a:
-            time_seconds = st.number_input("Timp lucru (secunde)", min_value=5, max_value=3600, value=120, step=5)
-        with col_b:
-            st.session_state.attempts = st.number_input("Încercări", min_value=1, max_value=5, value=int(st.session_state.attempts), step=1)
-        with col_c:
-            st.session_state.hints_used = st.number_input("Indicii deja cerute", min_value=0, max_value=3, value=int(st.session_state.hints_used), step=1)
+        status_columns = st.columns([1, 1, 1])
+        with status_columns[0]:
+            st.metric("Urmărire automată", "activă")
+        with status_columns[1]:
+            st.metric("Încercări", int(st.session_state.current_exercise_attempt_count or 1))
+        with status_columns[2]:
+            st.metric("Indicii", int(st.session_state.current_exercise_hint_count))
 
-        hint = choose_hint(row["Problema"], row["Pasii de rezolvare"], st.session_state.mastery, st.session_state.hints_used)
+        time_seconds = int(time.time() - st.session_state.current_exercise_start_time) if st.session_state.current_exercise_start_time else 120
+        attempts = max(1, int(st.session_state.current_exercise_attempt_count or 1))
+        hints_used = int(st.session_state.current_exercise_hint_count)
+
+        hint = choose_hint(row["Problema"], row["Pasii de rezolvare"], st.session_state.mastery, hints_used)
         with st.expander("Cere un indiciu gradual"):
             st.write(f"**Tip indiciu:** {hint['hint_type']}")
             st.write(hint["hint"])
             if st.button("Am folosit un indiciu"):
-                st.session_state.hints_used = min(3, int(st.session_state.hints_used) + 1)
+                st.session_state.current_exercise_hint_count = min(3, hints_used + 1)
                 st.rerun()
 
         st.markdown("#### Întrebare de conștientizare")
-        q_idx = (int(exercise_idx) + int(st.session_state.hints_used)) % len(METACOGNITIVE_QUESTIONS)
+        q_idx = (int(exercise_idx) + hints_used) % len(METACOGNITIVE_QUESTIONS)
         st.info(METACOGNITIVE_QUESTIONS[q_idx])
 
         if st.button("Evaluează răspunsul și recomandă următorul pas", type="primary"):
             result = evaluate_answer(student_answer, row["Raspunsul"])
             learning_state = diagnose_learning_state(
-                result["correct"], int(st.session_state.hints_used), int(st.session_state.attempts), int(time_seconds)
+                result["correct"], hints_used, attempts, int(time_seconds)
             )
             new_mastery = update_mastery(
-                st.session_state.mastery, result["correct"], int(st.session_state.hints_used), int(st.session_state.attempts)
+                st.session_state.mastery, result["correct"], hints_used, attempts
             )
             target = target_difficulty_from_mastery(new_mastery, result["correct"])
             next_row = recommend_next_exercise(data, row["Domeniu"], target, exclude_problem=row["Problema"], random_state=int(exercise_idx) + 1)
@@ -550,13 +539,24 @@ with tabs[1]:
 
     exercise_idx = st.session_state.selected_exercise_idx
     current_row = data.loc[exercise_idx]
-    
+
+    if st.session_state.current_exercise_start_time is None:
+        st.session_state.current_exercise_start_time = time.time()
+    elapsed = int(time.time() - st.session_state.current_exercise_start_time) if st.session_state.current_exercise_start_time else 0
+
     st.divider()
     st.markdown("### 📝 Problemă")
     st.markdown(f"<div class='main-card'>{current_row['Problema']}</div>", unsafe_allow_html=True)
     st.caption(f"Domeniu: **{current_row.get('Domeniu', '—')}** · Temă: **{current_row.get('Tema_norm', '—')}** · Nivel: **{current_row.get('Dificultate_group', '—')}**")
 
-    # Student answer and tracking
+    status_col1, status_col2, status_col3 = st.columns([1, 1, 1])
+    with status_col1:
+        st.metric("Încercări", st.session_state.current_exercise_attempt_count or 0)
+    with status_col2:
+        st.metric("Indicii", st.session_state.current_exercise_hint_count)
+    with status_col3:
+        st.metric("Timp", f"{elapsed}s")
+
     student_answer = st.text_area(
         "Scrie răspunsul tău",
         placeholder="Introdu răspunsul aici...",
