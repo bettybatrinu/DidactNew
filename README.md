@@ -59,7 +59,9 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Aplicația folosește modelele deja salvate în `/models`. Pentru reantrenare:
+Aplicația folosește modelele deja salvate în `/models`. Dacă lipsește vreun artifact, app-ul va cere explicit să rulezi `python -m src.train_models` în loc să reantreneze în background.
+
+Pentru reantrenare:
 
 ```bash
 python -m src.train_models
@@ -69,6 +71,18 @@ Pentru regenerarea vizualizărilor EDA (heatmap corelații, word clouds, distrib
 
 ```bash
 python -m src.eda
+```
+
+### Instalare dezvoltare
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+### Testare
+
+```bash
+pytest
 ```
 
 ### API REST (opțional) — testare programatică a celor două servicii
@@ -89,17 +103,19 @@ Endpoint-uri: `POST /predict/domain` (text → domeniu), `POST /predict/difficul
 
 ```text
 app.py                              # UI Streamlit
+src/app_helpers.py                  # validare active ML, inițializare session_state
 src/data_prep.py                    # curățare, normalizare, feature engineering
 src/train_models.py                 # antrenare + baseline + GridSearchCV + evaluare
 src/model_utils.py                  # încărcare modele + inferență
 src/pedagogical_engine.py           # indicii, mastery update, recomandări
+tests/                              # teste unitare pentru logica principală
 data/raw/                           # fișierele .xlsx furnizate
 data/processed/exercises_processed.csv
 models/structured_difficulty_model.joblib
 models/unstructured_domain_model.joblib
 models/evaluation_report.json
 docs/competition_QA.md              # răspunsuri pregătite pentru juriu
-```
+``` 
 
 ## Ce demonstrează aplicația
 

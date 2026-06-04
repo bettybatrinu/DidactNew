@@ -9,12 +9,11 @@ import pandas as pd
 import streamlit as st
 
 from src.data_prep import engineer_features
+from src.app_helpers import initialize_session_state, load_app_assets
 from src.model_utils import (
-    load_assets,
     prepare_single_problem,
     predict_domain_from_text,
     predict_structured_difficulty,
-    resolve_dataset_path,
 )
 try:
     from src.neural_student_state_model import ensure_neural_model_exists, predict_neural_student_state
@@ -34,7 +33,6 @@ from src.pedagogical_engine import (
     target_difficulty_from_mastery,
     update_mastery,
 )
-from src.train_models import train_all
 
 ROOT = Path(__file__).resolve().parent
 
@@ -62,49 +60,18 @@ st.markdown(
 )
 
 
-def _asset_signature(path: Path) -> str:
-    try:
-        stat = path.stat()
-        return f"{path}:{stat.st_mtime_ns}:{stat.st_size}"
-    except FileNotFoundError:
-        return f"{path}:missing"
-
-
-@st.cache_resource(show_spinner="Loading/training ML services...")
-def cached_assets(dataset_signature: str, report_signature: str):
-    required = [
-        ROOT / "models" / "structured_difficulty_model.joblib",
-        ROOT / "models" / "unstructured_domain_model.joblib",
-        ROOT / "models" / "evaluation_report.json",
-        ROOT / "data" / "processed" / "exercises_augmented.csv",
-    ]
-    dataset_path = resolve_dataset_path()
-    report_path = ROOT / "models" / "evaluation_report.json"
-
-    should_refresh = False
-    if not all(p.exists() for p in required):
-        should_refresh = True
-    else:
-        try:
-            report = json.loads(report_path.read_text(encoding="utf-8"))
-            should_refresh = int(report.get("dataset", {}).get("rows_total", 0)) != len(pd.read_csv(dataset_path))
-        except Exception:
-            should_refresh = True
-
-    if should_refresh:
-        train_all()
-    return load_assets()
+@st.cache_resource(show_spinner="Loading ML services...")
+def cached_assets():
+    return load_app_assets()
 
 
 # Cache will persist by default. For development, use st.cache_resource.clear() manually if needed.
 
 try:
-    dataset_signature = _asset_signature(resolve_dataset_path())
-    report_signature = _asset_signature(ROOT / "models" / "evaluation_report.json")
-    structured_model, unstructured_model, data, report = cached_assets(dataset_signature, report_signature)
+    structured_model, unstructured_model, data, report = cached_assets()
 except Exception as e:
     st.error(f"Failed to load ML assets: {e}")
-    st.info("Please check that all model files and data files are present in the models/ and data/processed/ directories.")
+    st.info("Please run `python -m src.train_models` and make sure the models/ and data/processed/ directories contain the required files.")
     st.stop()
 
 
@@ -131,35 +98,7 @@ for col in ["Dificultate", "Itemul", "Sursa_year"]:
     if col in data.columns:
         data[col] = pd.to_numeric(data[col], errors="coerce")
 
-# Initialize session state for learning tracking and interaction history
-if "mastery" not in st.session_state:
-    st.session_state.mastery = 0.55
-if "hints_used" not in st.session_state:
-    st.session_state.hints_used = 0
-if "attempts" not in st.session_state:
-    st.session_state.attempts = 1
-if "diagnostic_started" not in st.session_state:
-    st.session_state.diagnostic_started = False
-if "diagnostic_results" not in st.session_state:
-    st.session_state.diagnostic_results = None
-if "diagnostic_seed" not in st.session_state:
-    st.session_state.diagnostic_seed = int(time.time()) % 100000
-
-# Neural model integration tracking
-if "interaction_log" not in st.session_state:
-    st.session_state.interaction_log = []
-if "current_exercise_start_time" not in st.session_state:
-    st.session_state.current_exercise_start_time = None
-if "current_exercise_attempt_count" not in st.session_state:
-    st.session_state.current_exercise_attempt_count = 0
-if "current_exercise_hint_count" not in st.session_state:
-    st.session_state.current_exercise_hint_count = 0
-if "current_exercise_mistake_count" not in st.session_state:
-    st.session_state.current_exercise_mistake_count = 0
-if "current_exercise_consecutive_errors" not in st.session_state:
-    st.session_state.current_exercise_consecutive_errors = 0
-if "neural_available" not in st.session_state:
-    st.session_state.neural_available = False
+initialize_session_state(st.session_state)
 
 # Check neural model availability once at startup
 if ensure_neural_model_exists is not None:

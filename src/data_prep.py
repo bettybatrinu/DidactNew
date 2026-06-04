@@ -72,70 +72,58 @@ def canonicalize_tema(raw_tema: str) -> str:
     if not t:
         return "Necunoscut"
 
-    # Specific before general.
     if "sistem" in t:
         return "Sisteme de ecuații"
     if "inecu" in t:
         return "Inecuații"
-    if "ecuat" in t or "ecuati" in t or "ecuatie" in t:
+    if any(k in t for k in ["ecuat", "ecuati", "ecuatie"]):
         if "gradul ii" in t or "gradul 2" in t:
             return "Ecuații de gradul II"
         return "Ecuații"
-    if "functie" in t or "functi" in t:
-        if "gradul ii" in t or "patrat" in t:
+    if any(k in t for k in ["functie", "functi"]):
+        if any(k in t for k in ["gradul ii", "patrat"]):
             return "Funcția de gradul II"
         if "liniar" in t:
             return "Funcții liniare"
         return "Funcții"
-    if "triunghi" in t:
-        return "Geometrie - Triunghiuri"
-    if "cerc" in t or "disc" in t:
-        return "Geometrie - Cercul"
-    if "trape" in t:
-        return "Geometrie - Trapeze"
-    if "romb" in t:
-        return "Geometrie - Romburi"
-    if "paralelogram" in t:
-        return "Geometrie - Paralelograme"
-    if "arii" in t or "arie" in t:
-        return "Geometrie - Arii"
-    if any(k in t for k in ["volum", "prism", "piram", "cilind", "cub", "sfer", "3d", "paralelipiped"]):
-        return "Geometrie 3D"
-    if "geometr" in t:
-        return "Geometrie"
-    if "procent" in t:
-        return "Procente"
-    if "proport" in t or "rapoarte" in t or "scari" in t:
-        return "Rapoarte și proporții"
-    if "radical" in t:
-        return "Radicali"
-    if "puteri" in t or "putere" in t:
-        return "Puteri"
-    if "numere" in t or "multimi" in t or "mulțimi" in str(raw_tema).lower():
-        return "Mulțimi numerice"
-    if "expres" in t or "polino" in t or "fractii algebrice" in t or "calcul algebric" in t:
-        return "Calcul algebric"
-    if "sir" in t or "șir" in str(raw_tema).lower():
-        return "Șiruri"
-    if "miscare" in t or "aplicate" in t:
-        return "Probleme aplicate"
-    return str(raw_tema).strip()
+
+    topics = [
+        (r"triunghi", "Geometrie - Triunghiuri"),
+        (r"cerc|disc", "Geometrie - Cercul"),
+        (r"trape", "Geometrie - Trapeze"),
+        (r"romb", "Geometrie - Romburi"),
+        (r"paralelogram", "Geometrie - Paralelograme"),
+        (r"arii|arie", "Geometrie - Arii"),
+        (r"volum|prism|piram|cilind|cub|sfer|3d|paralelipiped", "Geometrie 3D"),
+        (r"geometr", "Geometrie"),
+        (r"procent", "Procente"),
+        (r"proport|rapoarte|scari", "Rapoarte și proporții"),
+        (r"radical", "Radicali"),
+        (r"puteri|putere", "Puteri"),
+        (r"numere|multimi|mulțimi", "Mulțimi numerice"),
+        (r"expres|polino|fractii algebrice|calcul algebric", "Calcul algebric"),
+        (r"sir|șir", "Șiruri"),
+        (r"miscare|aplicate", "Probleme aplicate"),
+    ]
+    for pattern, label in topics:
+        if re.search(pattern, t):
+            return label
+    return str(raw_tema).strip() or "Necunoscut"
 
 
 def infer_domeniu(tema_norm: str) -> str:
     t = clean_text(tema_norm)
-    if "geometr" in t or any(k in t for k in ["triunghi", "cerc", "trape", "romb", "paralelogram", "arii", "volum"]):
-        return "Geometrie"
-    if "functie" in t or "functi" in t:
-        return "Funcții"
-    if "ecuat" in t or "sistem" in t or "inecu" in t:
-        return "Ecuații, inecuații și sisteme"
-    if "procent" in t or "proport" in t or "rapoarte" in t:
-        return "Rapoarte și proporții"
-    if "expres" in t or "polino" in t or "calcul algebric" in t:
-        return "Calcul algebric"
-    if "numere" in t or "multimi" in t or "radical" in t or "puteri" in t:
-        return "Mulțimi numerice"
+    domain_map = [
+        (r"geometr|triunghi|cerc|trape|romb|paralelogram|arii|volum", "Geometrie"),
+        (r"functie|functi", "Funcții"),
+        (r"ecuat|inecu|sistem", "Ecuații, inecuații și sisteme"),
+        (r"procent|proport|rapoarte", "Rapoarte și proporții"),
+        (r"expres|polino|calcul algebric", "Calcul algebric"),
+        (r"numere|multimi|radical|puteri", "Mulțimi numerice"),
+    ]
+    for pattern, label in domain_map:
+        if re.search(pattern, t):
+            return label
     return "Altele"
 
 
@@ -143,7 +131,7 @@ def source_type(sursa: str) -> str:
     s = clean_text(sursa)
     if not s:
         return "fara_sursa"
-    if "sesiune" in s or "sesiunea" in s:
+    if "sesiune" in s:
         return "sesiune_baza"
     if "pretest" in s:
         return "pretestare"

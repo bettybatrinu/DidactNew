@@ -18,10 +18,9 @@ Endpoints:
 """
 from __future__ import annotations
 
-from contextlib import asynccontextmanager
 from typing import Dict, Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from src.model_utils import (
@@ -30,23 +29,6 @@ from src.model_utils import (
     predict_structured_difficulty,
     prepare_single_problem,
 )
-
-# Models are loaded once at startup and reused across requests.
-_STRUCTURED = None
-_UNSTRUCTURED = None
-_REPORT: Dict = {}
-
-
-@asynccontextmanager
-async def lifespan(app: "FastAPI"):
-    global _STRUCTURED, _UNSTRUCTURED, _REPORT
-    try:
-        structured, unstructured, _data, report = load_assets()
-        _STRUCTURED, _UNSTRUCTURED, _REPORT = structured, unstructured, report
-    except Exception as exc:  # surfaced through /health
-        _STRUCTURED, _UNSTRUCTURED, _REPORT = None, None, {"load_error": str(exc)}
-    yield
-
 
 app = FastAPI(
     title="Didact AI – ML Services API",
@@ -58,8 +40,22 @@ app = FastAPI(
         "programatică independentă."
     ),
     version="1.0.0",
-    lifespan=lifespan,
 )
+
+
+@app.on_event("startup")
+async def startup_event() -> None:
+    try:
+        structured, unstructured, _data, report = load_assets()
+        app.state.structured_model = structured
+        app.state.unstructured_model = unstructured
+        app.state.report = report
+        app.state.load_error = None
+    except Exception as exc:
+        app.state.structured_model = None
+        app.state.unstructured_model = None
+        app.state.report = {"load_error": str(exc)}
+        app.state.load_error = str(exc)
 
 
 class DomainRequest(BaseModel):
@@ -88,20 +84,25 @@ class DifficultyResponse(BaseModel):
 
 
 @app.get("/health", summary="Liveness + loaded models")
-def health() -> Dict:
+def health(request: Request) -> Dict:
+    structured = getattr(request.app.state, "structured_model", None)
+    unstructured = getattr(request.app.state, "unstructured_model", None)
+    report = getattr(request.app.state, "report", {})
     return {
-        "status": "ok" if _STRUCTURED is not None and _UNSTRUCTURED is not None else "degraded",
-        "structured_model_loaded": _STRUCTURED is not None,
-        "unstructured_model_loaded": _UNSTRUCTURED is not None,
-        "structured_macro_f1": _REPORT.get("structured_model", {}).get("model", {}).get("macro_f1"),
-        "unstructured_macro_f1": _REPORT.get("unstructured_model", {}).get("model", {}).get("macro_f1"),
+        "status": "ok" if structured is not None and unstructured is not None else "degraded",
+        "structured_model_loaded": structured is not None,
+        "unstructured_model_loaded": unstructured is not None,
+        "structured_macro_f1": report.get("structured_model", {}).get("model", {}).get("macro_f1"),
+        "unstructured_macro_f1": report.get("unstructured_model", {}).get("model", {}).get("macro_f1"),
+        "load_error": report.get("load_error"),
     }
 
 
 @app.get("/schema", summary="Feature schema of the structured service")
-def schema() -> Dict:
+def schema(request: Request) -> Dict:
+    report = getattr(request.app.state, "report", {})
     return {
-        "structured_inputs": _REPORT.get("structured_model", {}).get("inputs", {}),
+        "structured_inputs": report.get("structured_model", {}).get("inputs", {}),
         "structured_target": "Dificultate_group (1-bază / 2-mediu / 3-consolidare / 4-avansat)",
         "unstructured_input": "raw problem text",
         "unstructured_target": "Domeniu (curriculum domain)",
@@ -110,25 +111,27 @@ def schema() -> Dict:
 
 @app.post("/predict/domain", response_model=DomainResponse,
           summary="Unstructured service: text -> curriculum domain")
-def predict_domain(req: DomainRequest) -> DomainResponse:
-    if _UNSTRUCTURED is None:
+def predict_domain(req: DomainRequest, request: Request) -> DomainResponse:
+    model = getattr(request.app.state, "unstructured_model", None)
+    if model is None:
         raise HTTPException(status_code=503, detail="Unstructured model not loaded.")
     if not req.text.strip():
         raise HTTPException(status_code=422, detail="Field 'text' must not be empty.")
-    out = predict_domain_from_text(_UNSTRUCTURED, req.text)
+    out = predict_domain_from_text(model, req.text)
     return DomainResponse(service="unstructured_domain", **out)
 
 
 @app.post("/predict/difficulty", response_model=DifficultyResponse,
           summary="Structured service: metadata -> difficulty class")
-def predict_difficulty(req: DifficultyRequest) -> DifficultyResponse:
-    if _STRUCTURED is None:
+def predict_difficulty(req: DifficultyRequest, request: Request) -> DifficultyResponse:
+    model = getattr(request.app.state, "structured_model", None)
+    if model is None:
         raise HTTPException(status_code=503, detail="Structured model not loaded.")
     features = prepare_single_problem(
         problem=req.problem, tema_norm=req.tema_norm, domeniu=req.domeniu,
         item=req.item, sursa_type=req.sursa_type,
     )
-    out = predict_structured_difficulty(_STRUCTURED, features)
+    out = predict_structured_difficulty(model, features)
     return DifficultyResponse(service="structured_difficulty", **out)
 
 
