@@ -1,0 +1,9 @@
+# Optional REST API layer (FastAPI + Swagger UI).
+# Install on top of the core requirements to expose the two ML services over HTTP:
+#   pip install -r requirements.txt -r requirements-api.txt
+#   uvicorn api:app --reload --port 8000
+#   open http://localhost:8000/docs
+
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0

@@ -1,0 +1,26 @@
+{
+  "structured_numeric_features": [
+    "Itemul",
+    "Sursa_year",
+    "problem_chars",
+    "problem_words",
+    "steps_chars",
+    "answer_chars",
+    "n_digits",
+    "n_math_symbols",
+    "has_percent",
+    "has_geometry_word",
+    "has_equation_word",
+    "has_radical",
+    "has_function_word",
+    "has_real_life_context"
+  ],
+  "structured_categorical_features": [
+    "Tema_norm",
+    "Domeniu",
+    "Sursa_type"
+  ],
+  "structured_target": "Dificultate_group",
+  "unstructured_input": "Problema",
+  "unstructured_target": "Domeniu"
+}

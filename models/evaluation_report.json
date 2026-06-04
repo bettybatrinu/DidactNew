@@ -1,0 +1,851 @@
+{
+  "dataset": {
+    "rows_total": 1344,
+    "rows_with_difficulty_and_topic": 1344,
+    "exact_duplicate_problem_rows": 0,
+    "missing_by_column": {
+      "Sursa": 0,
+      "Itemul": 1212,
+      "Problema": 0,
+      "Pasii de rezolvare": 0,
+      "Raspunsul": 0,
+      "Dificultate": 0,
+      "Tema": 0,
+      "Tema_norm": 0,
+      "Domeniu": 0,
+      "Dificultate_group": 0,
+      "Sursa_type": 0,
+      "Sursa_year": 1212,
+      "Problema_clean": 0,
+      "Pasi_clean": 0,
+      "Raspuns_clean": 0,
+      "problem_chars": 0,
+      "problem_words": 0,
+      "steps_chars": 0,
+      "answer_chars": 0,
+      "n_digits": 0,
+      "n_math_symbols": 0,
+      "has_percent": 0,
+      "has_geometry_word": 0,
+      "has_equation_word": 0,
+      "has_radical": 0,
+      "has_function_word": 0,
+      "has_real_life_context": 0,
+      "problem_hash": 0
+    },
+    "difficulty_distribution": {
+      "2 - mediu": 650,
+      "1 - bază": 543,
+      "3 - consolidare": 136,
+      "4 - avansat": 15
+    },
+    "domain_distribution": {
+      "Ecuații, inecuații și sisteme": 384,
+      "Funcții": 257,
+      "Geometrie": 232,
+      "Rapoarte și proporții": 232,
+      "Mulțimi numerice": 110,
+      "Altele": 79,
+      "Calcul algebric": 50
+    },
+    "topic_top_20": {
+      "Procente": 212,
+      "Sisteme de ecuații": 187,
+      "Ecuații de gradul II": 114,
+      "Funcții liniare": 103,
+      "Radicali": 101,
+      "Geometrie - Arii": 86,
+      "Funcția de gradul II": 86,
+      "Inecuații": 82,
+      "Calcul aritmetic": 79,
+      "Geometrie 3D": 77,
+      "Funcții": 68,
+      "Calcul algebric": 50,
+      "Geometrie - Cercul": 28,
+      "Geometrie - Triunghiuri": 23,
+      "Rapoarte și proporții": 20,
+      "Geometrie - Paralelograme": 11,
+      "Mulțimi numerice": 6,
+      "Geometrie": 5,
+      "Puteri": 3,
+      "Geometrie - Trapeze": 1
+    },
+    "feature_correlations": {
+      "Itemul": {
+        "Itemul": 1.0,
+        "Sursa_year": -0.023,
+        "problem_chars": 0.062,
+        "problem_words": 0.037,
+        "steps_chars": 0.133,
+        "answer_chars": 0.025,
+        "n_digits": 0.019,
+        "n_math_symbols": 0.214,
+        "has_percent": -0.223,
+        "has_geometry_word": -0.049,
+        "has_equation_word": -0.01,
+        "has_radical": 0.0,
+        "has_function_word": 0.281,
+        "has_real_life_context": -0.021
+      },
+      "Sursa_year": {
+        "Itemul": -0.023,
+        "Sursa_year": 1.0,
+        "problem_chars": 0.026,
+        "problem_words": 0.046,
+        "steps_chars": 0.1,
+        "answer_chars": 0.156,
+        "n_digits": 0.13,
+        "n_math_symbols": 0.001,
+        "has_percent": 0.041,
+        "has_geometry_word": -0.022,
+        "has_equation_word": -0.105,
+        "has_radical": -0.019,
+        "has_function_word": -0.043,
+        "has_real_life_context": -0.084
+      },
+      "problem_chars": {
+        "Itemul": 0.062,
+        "Sursa_year": 0.026,
+        "problem_chars": 1.0,
+        "problem_words": 0.955,
+        "steps_chars": 0.312,
+        "answer_chars": 0.201,
+        "n_digits": 0.237,
+        "n_math_symbols": -0.182,
+        "has_percent": 0.474,
+        "has_geometry_word": 0.16,
+        "has_equation_word": -0.38,
+        "has_radical": -0.245,
+        "has_function_word": 0.162,
+        "has_real_life_context": 0.639
+      },
+      "problem_words": {
+        "Itemul": 0.037,
+        "Sursa_year": 0.046,
+        "problem_chars": 0.955,
+        "problem_words": 1.0,
+        "steps_chars": 0.369,
+        "answer_chars": 0.252,
+        "n_digits": 0.256,
+        "n_math_symbols": -0.041,
+        "has_percent": 0.354,
+        "has_geometry_word": 0.097,
+        "has_equation_word": -0.255,
+        "has_radical": -0.307,
+        "has_function_word": 0.301,
+        "has_real_life_context": 0.539
+      },
+      "steps_chars": {
+        "Itemul": 0.133,
+        "Sursa_year": 0.1,
+        "problem_chars": 0.312,
+        "problem_words": 0.369,
+        "steps_chars": 1.0,
+        "answer_chars": 0.372,
+        "n_digits": 0.237,
+        "n_math_symbols": 0.044,
+        "has_percent": -0.015,
+        "has_geometry_word": -0.045,
+        "has_equation_word": 0.318,
+        "has_radical": -0.126,
+        "has_function_word": -0.145,
+        "has_real_life_context": 0.16
+      },
+      "answer_chars": {
+        "Itemul": 0.025,
+        "Sursa_year": 0.156,
+        "problem_chars": 0.201,
+        "problem_words": 0.252,
+        "steps_chars": 0.372,
+        "answer_chars": 1.0,
+        "n_digits": -0.096,
+        "n_math_symbols": -0.006,
+        "has_percent": -0.241,
+        "has_geometry_word": -0.218,
+        "has_equation_word": 0.326,
+        "has_radical": -0.09,
+        "has_function_word": 0.027,
+        "has_real_life_context": 0.153
+      },
+      "n_digits": {
+        "Itemul": 0.019,
+        "Sursa_year": 0.13,
+        "problem_chars": 0.237,
+        "problem_words": 0.256,
+        "steps_chars": 0.237,
+        "answer_chars": -0.096,
+        "n_digits": 1.0,
+        "n_math_symbols": 0.097,
+        "has_percent": 0.535,
+        "has_geometry_word": -0.18,
+        "has_equation_word": 0.203,
+        "has_radical": -0.095,
+        "has_function_word": -0.241,
+        "has_real_life_context": 0.368
+      },
+      "n_math_symbols": {
+        "Itemul": 0.214,
+        "Sursa_year": 0.001,
+        "problem_chars": -0.182,
+        "problem_words": -0.041,
+        "steps_chars": 0.044,
+        "answer_chars": -0.006,
+        "n_digits": 0.097,
+        "n_math_symbols": 1.0,
+        "has_percent": -0.331,
+        "has_geometry_word": -0.373,
+        "has_equation_word": 0.164,
+        "has_radical": 0.063,
+        "has_function_word": 0.515,
+        "has_real_life_context": -0.425
+      },
+      "has_percent": {
+        "Itemul": -0.223,
+        "Sursa_year": 0.041,
+        "problem_chars": 0.474,
+        "problem_words": 0.354,
+        "steps_chars": -0.015,
+        "answer_chars": -0.241,
+        "n_digits": 0.535,
+        "n_math_symbols": -0.331,
+        "has_percent": 1.0,
+        "has_geometry_word": -0.056,
+        "has_equation_word": -0.227,
+        "has_radical": -0.095,
+        "has_function_word": -0.211,
+        "has_real_life_context": 0.713
+      },
+      "has_geometry_word": {
+        "Itemul": -0.049,
+        "Sursa_year": -0.022,
+        "problem_chars": 0.16,
+        "problem_words": 0.097,
+        "steps_chars": -0.045,
+        "answer_chars": -0.218,
+        "n_digits": -0.18,
+        "n_math_symbols": -0.373,
+        "has_percent": -0.056,
+        "has_geometry_word": 1.0,
+        "has_equation_word": -0.258,
+        "has_radical": -0.099,
+        "has_function_word": -0.239,
+        "has_real_life_context": -0.151
+      },
+      "has_equation_word": {
+        "Itemul": -0.01,
+        "Sursa_year": -0.105,
+        "problem_chars": -0.38,
+        "problem_words": -0.255,
+        "steps_chars": 0.318,
+        "answer_chars": 0.326,
+        "n_digits": 0.203,
+        "n_math_symbols": 0.164,
+        "has_percent": -0.227,
+        "has_geometry_word": -0.258,
+        "has_equation_word": 1.0,
+        "has_radical": -0.099,
+        "has_function_word": -0.248,
+        "has_real_life_context": -0.302
+      },
+      "has_radical": {
+        "Itemul": 0.0,
+        "Sursa_year": -0.019,
+        "problem_chars": -0.245,
+        "problem_words": -0.307,
+        "steps_chars": -0.126,
+        "answer_chars": -0.09,
+        "n_digits": -0.095,
+        "n_math_symbols": 0.063,
+        "has_percent": -0.095,
+        "has_geometry_word": -0.099,
+        "has_equation_word": -0.099,
+        "has_radical": 1.0,
+        "has_function_word": -0.071,
+        "has_real_life_context": -0.128
+      },
+      "has_function_word": {
+        "Itemul": 0.281,
+        "Sursa_year": -0.043,
+        "problem_chars": 0.162,
+        "problem_words": 0.301,
+        "steps_chars": -0.145,
+        "answer_chars": 0.027,
+        "n_digits": -0.241,
+        "n_math_symbols": 0.515,
+        "has_percent": -0.211,
+        "has_geometry_word": -0.239,
+        "has_equation_word": -0.248,
+        "has_radical": -0.071,
+        "has_function_word": 1.0,
+        "has_real_life_context": -0.154
+      },
+      "has_real_life_context": {
+        "Itemul": -0.021,
+        "Sursa_year": -0.084,
+        "problem_chars": 0.639,
+        "problem_words": 0.539,
+        "steps_chars": 0.16,
+        "answer_chars": 0.153,
+        "n_digits": 0.368,
+        "n_math_symbols": -0.425,
+        "has_percent": 0.713,
+        "has_geometry_word": -0.151,
+        "has_equation_word": -0.302,
+        "has_radical": -0.128,
+        "has_function_word": -0.154,
+        "has_real_life_context": 1.0
+      }
+    },
+    "top_correlated_feature_pairs": [
+      {
+        "feature_a": "problem_chars",
+        "feature_b": "problem_words",
+        "corr": 0.955
+      },
+      {
+        "feature_a": "has_percent",
+        "feature_b": "has_real_life_context",
+        "corr": 0.713
+      },
+      {
+        "feature_a": "problem_chars",
+        "feature_b": "has_real_life_context",
+        "corr": 0.639
+      },
+      {
+        "feature_a": "problem_words",
+        "feature_b": "has_real_life_context",
+        "corr": 0.539
+      },
+      {
+        "feature_a": "n_digits",
+        "feature_b": "has_percent",
+        "corr": 0.535
+      },
+      {
+        "feature_a": "n_math_symbols",
+        "feature_b": "has_function_word",
+        "corr": 0.515
+      },
+      {
+        "feature_a": "problem_chars",
+        "feature_b": "has_percent",
+        "corr": 0.474
+      },
+      {
+        "feature_a": "n_math_symbols",
+        "feature_b": "has_real_life_context",
+        "corr": -0.425
+      }
+    ],
+    "problem_length_words": {
+      "min": 2.0,
+      "median": 15.0,
+      "mean": 15.45014880952381,
+      "max": 74.0
+    },
+    "dataset_decision": "Usable for a strong competition MVP because it contains Romanian math problem text, solutions, topic labels, and difficulty labels. Not production-grade: it is small, topic labels were noisy before normalization, and there are exact duplicates/missing labels; the code explicitly cleans these and reports the limitations."
+  },
+  "structured_model": {
+    "task": "Structured difficulty classification",
+    "target": "Dificultate_group",
+    "inputs": {
+      "numeric": [
+        "Itemul",
+        "Sursa_year",
+        "problem_chars",
+        "problem_words",
+        "steps_chars",
+        "answer_chars",
+        "n_digits",
+        "n_math_symbols",
+        "has_percent",
+        "has_geometry_word",
+        "has_equation_word",
+        "has_radical",
+        "has_function_word",
+        "has_real_life_context"
+      ],
+      "categorical": [
+        "Tema_norm",
+        "Domeniu",
+        "Sursa_type"
+      ]
+    },
+    "rows_used": 1344,
+    "train_rows": 1048,
+    "test_rows": 296,
+    "class_distribution": {
+      "2 - mediu": 650,
+      "1 - bază": 543,
+      "3 - consolidare": 136,
+      "4 - avansat": 15
+    },
+    "baseline": {
+      "accuracy": 0.4831081081081081,
+      "balanced_accuracy": 0.25,
+      "macro_f1": 0.16287015945330297,
+      "weighted_f1": 0.31473557840300437
+    },
+    "model": {
+      "accuracy": 0.9290540540540541,
+      "balanced_accuracy": 0.7981060606060606,
+      "macro_f1": 0.8015646539840089,
+      "weighted_f1": 0.9313673164479616
+    },
+    "best_params": {
+      "clf__class_weight": "balanced",
+      "clf__max_depth": 8,
+      "clf__min_samples_leaf": 1,
+      "clf__n_estimators": 120
+    },
+    "best_cv_macro_f1": 0.8258668273366613,
+    "best_cv_macro_f1_std": 0.09385904993140545,
+    "model_comparison": {
+      "RandomForest": {
+        "cv_macro_f1_mean": 0.8154,
+        "cv_macro_f1_std": 0.0197,
+        "test_macro_f1": 0.7697
+      },
+      "GradientBoosting": {
+        "cv_macro_f1_mean": 0.8118,
+        "cv_macro_f1_std": 0.1018,
+        "test_macro_f1": 0.8228
+      },
+      "LogisticRegression": {
+        "cv_macro_f1_mean": 0.7503,
+        "cv_macro_f1_std": 0.0545,
+        "test_macro_f1": 0.8378
+      },
+      "XGBoost": {
+        "cv_macro_f1_mean": 0.7669,
+        "cv_macro_f1_std": 0.1164,
+        "test_macro_f1": 0.6989
+      }
+    },
+    "learning_curve": {
+      "train_sizes": [
+        167,
+        335,
+        502,
+        670,
+        838
+      ],
+      "cv_macro_f1": [
+        0.6977,
+        0.7667,
+        0.781,
+        0.7975,
+        0.7965
+      ],
+      "train_macro_f1": [
+        0.9959,
+        0.9796,
+        0.9719,
+        0.9623,
+        0.9648
+      ],
+      "asset": "learning_curve_structured.png",
+      "data_starved": false
+    },
+    "feature_importance": {
+      "steps_chars": 0.1265,
+      "Itemul": 0.1029,
+      "Sursa_type_alta": 0.088,
+      "answer_chars": 0.0776,
+      "problem_chars": 0.0707,
+      "problem_words": 0.0631,
+      "n_math_symbols": 0.0517,
+      "n_digits": 0.0464,
+      "has_equation_word": 0.0442,
+      "Sursa_year": 0.0434,
+      "Domeniu_Ecuații, inecuații și sisteme": 0.0397,
+      "Tema_norm_Sisteme de ecuații": 0.0323
+    },
+    "classification_report": {
+      "1 - bază": {
+        "precision": 1.0,
+        "recall": 0.95,
+        "f1-score": 0.9743589743589743,
+        "support": 120.0
+      },
+      "2 - mediu": {
+        "precision": 0.9558823529411765,
+        "recall": 0.9090909090909091,
+        "f1-score": 0.931899641577061,
+        "support": 143.0
+      },
+      "3 - consolidare": {
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1-score": 0.8,
+        "support": 30.0
+      },
+      "4 - avansat": {
+        "precision": 1.0,
+        "recall": 0.3333333333333333,
+        "f1-score": 0.5,
+        "support": 3.0
+      },
+      "accuracy": 0.9290540540540541,
+      "macro avg": {
+        "precision": 0.9056372549019608,
+        "recall": 0.7981060606060606,
+        "f1-score": 0.8015646539840089,
+        "support": 296.0
+      },
+      "weighted avg": {
+        "precision": 0.9449026232114467,
+        "recall": 0.9290540540540541,
+        "f1-score": 0.9313673164479616,
+        "support": 296.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "1 - bază",
+        "2 - mediu",
+        "3 - consolidare",
+        "4 - avansat"
+      ],
+      "matrix": [
+        [
+          114,
+          6,
+          0,
+          0
+        ],
+        [
+          0,
+          130,
+          13,
+          0
+        ],
+        [
+          0,
+          0,
+          30,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          1
+        ]
+      ]
+    },
+    "sample_errors": [
+      {
+        "problem": "Găsiți lungimea bazei unui triunghi isoscel cu aria 60 cm² și înălțimea 12 cm",
+        "true": "2 - mediu",
+        "predicted": "3 - consolidare",
+        "tema": "Geometrie - Arii",
+        "domeniu": "Geometrie",
+        "difficulty": "2 - mediu"
+      },
+      {
+        "problem": "Rezolvati sistemul de ecuatii: 5x - y = -29 si -x - 2y = -3",
+        "true": "2 - mediu",
+        "predicted": "3 - consolidare",
+        "tema": "Sisteme de ecuații",
+        "domeniu": "Ecuații, inecuații și sisteme",
+        "difficulty": "2 - mediu"
+      },
+      {
+        "problem": "Analizați funcția și determinați proprietățile ei",
+        "true": "2 - mediu",
+        "predicted": "3 - consolidare",
+        "tema": "Geometrie",
+        "domeniu": "Geometrie",
+        "difficulty": "2 - mediu"
+      },
+      {
+        "problem": "Determinați măsura unghiului ∠BAC într-o figură geometrică",
+        "true": "2 - mediu",
+        "predicted": "3 - consolidare",
+        "tema": "Geometrie",
+        "domeniu": "Geometrie",
+        "difficulty": "2 - mediu"
+      },
+      {
+        "problem": "Rezolvati sistemul de ecuatii: 2x + 5y = -12 si x - 2y = 12",
+        "true": "2 - mediu",
+        "predicted": "3 - consolidare",
+        "tema": "Sisteme de ecuații",
+        "domeniu": "Ecuații, inecuații și sisteme",
+        "difficulty": "2 - mediu"
+      },
+      {
+        "problem": "Un numar este cu 8 mai mare decat jumatate din alt numar. Determinati numerele daca se cunoaste ca suma lor este egala cu 23.",
+        "true": "2 - mediu",
+        "predicted": "3 - consolidare",
+        "tema": "Sisteme de ecuații",
+        "domeniu": "Ecuații, inecuații și sisteme",
+        "difficulty": "2 - mediu"
+      },
+      {
+        "problem": "Se considera functia f: R → R, f(x) = -3x + 7. Scrieti in spatiul liber una dintre expresiile 'strict crescatoare' sau 'strict descrescatoare', astfel incat propozitia obtinuta sa fie adevarata: Functia f este ... pe R",
+        "true": "1 - bază",
+        "predicted": "2 - mediu",
+        "tema": "Funcții",
+        "domeniu": "Funcții",
+        "difficulty": "1 - bază"
+      },
+      {
+        "problem": "Simplificati fractia [(2x-3)^2 - 3x(x-4) - 13] / [x^2 - x - 6], pentru x apartine R \\ {-2; 3}.",
+        "true": "2 - mediu",
+        "predicted": "3 - consolidare",
+        "tema": "Calcul algebric",
+        "domeniu": "Calcul algebric",
+        "difficulty": "2 - mediu"
+      }
+    ]
+  },
+  "unstructured_model": {
+    "task": "Unstructured text domain classification",
+    "target": "Domeniu",
+    "input": "raw problem text",
+    "rows_used": 1265,
+    "train_rows": 986,
+    "test_rows": 279,
+    "class_distribution": {
+      "Ecuații, inecuații și sisteme": 384,
+      "Funcții": 257,
+      "Geometrie": 232,
+      "Rapoarte și proporții": 232,
+      "Mulțimi numerice": 110,
+      "Calcul algebric": 50
+    },
+    "baseline": {
+      "accuracy": 0.3046594982078853,
+      "balanced_accuracy": 0.16666666666666666,
+      "macro_f1": 0.07783882783882784,
+      "weighted_f1": 0.14228602938280357
+    },
+    "model": {
+      "accuracy": 0.982078853046595,
+      "balanced_accuracy": 0.9756981580510993,
+      "macro_f1": 0.9743126806050849,
+      "weighted_f1": 0.9821197824536188
+    },
+    "best_params": {
+      "clf__alpha": 0.2,
+      "tfidf__max_features": 6000,
+      "tfidf__min_df": 1,
+      "tfidf__ngram_range": [
+        1,
+        2
+      ],
+      "tfidf__sublinear_tf": true
+    },
+    "best_cv_macro_f1": 0.9925132596837164,
+    "best_cv_macro_f1_std": 0.004792414852886572,
+    "model_comparison": {
+      "ComplementNB": {
+        "cv_macro_f1_mean": 0.9925,
+        "cv_macro_f1_std": 0.0048,
+        "test_macro_f1": 0.9743
+      },
+      "LinearSVC": {
+        "cv_macro_f1_mean": 0.992,
+        "cv_macro_f1_std": 0.0045,
+        "test_macro_f1": 0.9836
+      },
+      "LogisticRegression": {
+        "cv_macro_f1_mean": 0.9896,
+        "cv_macro_f1_std": 0.0051,
+        "test_macro_f1": 0.9743
+      }
+    },
+    "leakage_audit": {
+      "near_duplicate_threshold": 0.9,
+      "naive_test_items": 279,
+      "test_items_with_near_duplicate_in_train": 82,
+      "share_leaky": 0.294,
+      "n_near_duplicate_groups": 978,
+      "group_aware_holdout_macro_f1": 0.974,
+      "group_aware_cv_macro_f1_mean": 0.9861,
+      "group_aware_cv_macro_f1_std": 0.0092,
+      "conclusion": "Performance holds under group-aware evaluation -> the metric reflects a genuinely separable task, not leakage."
+    },
+    "learning_curve": {
+      "train_sizes": [
+        157,
+        315,
+        472,
+        630,
+        788
+      ],
+      "cv_macro_f1": [
+        0.9672,
+        0.9766,
+        0.9878,
+        0.9911,
+        0.9925
+      ],
+      "train_macro_f1": [
+        0.9983,
+        0.9978,
+        0.9983,
+        0.9976,
+        0.9972
+      ],
+      "asset": "learning_curve_text.png",
+      "data_starved": false
+    },
+    "classification_report": {
+      "Calcul algebric": {
+        "precision": 0.9090909090909091,
+        "recall": 0.9090909090909091,
+        "f1-score": 0.9090909090909091,
+        "support": 11.0
+      },
+      "Ecuații, inecuații și sisteme": {
+        "precision": 1.0,
+        "recall": 0.9647058823529412,
+        "f1-score": 0.9820359281437125,
+        "support": 85.0
+      },
+      "Funcții": {
+        "precision": 0.95,
+        "recall": 1.0,
+        "f1-score": 0.9743589743589743,
+        "support": 57.0
+      },
+      "Geometrie": {
+        "precision": 1.0,
+        "recall": 0.9803921568627451,
+        "f1-score": 0.9900990099009901,
+        "support": 51.0
+      },
+      "Mulțimi numerice": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 24.0
+      },
+      "Rapoarte și proporții": {
+        "precision": 0.9807692307692307,
+        "recall": 1.0,
+        "f1-score": 0.9902912621359223,
+        "support": 51.0
+      },
+      "accuracy": 0.982078853046595,
+      "macro avg": {
+        "precision": 0.9733100233100234,
+        "recall": 0.9756981580510993,
+        "f1-score": 0.9743126806050849,
+        "support": 279.0
+      },
+      "weighted avg": {
+        "precision": 0.9826854149434794,
+        "recall": 0.982078853046595,
+        "f1-score": 0.9821197824536188,
+        "support": 279.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Calcul algebric",
+        "Ecuații, inecuații și sisteme",
+        "Funcții",
+        "Geometrie",
+        "Mulțimi numerice",
+        "Rapoarte și proporții"
+      ],
+      "matrix": [
+        [
+          10,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          82,
+          2,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          57,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          50,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          24,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          51
+        ]
+      ]
+    },
+    "sample_errors": [
+      {
+        "problem": "Fie functia f:R->R, f(x) = -x + 2. Determinati valorile negative ale lui x, pentru care valorile respective ale functiei f sunt mai mici decat 4.",
+        "true": "Ecuații, inecuații și sisteme",
+        "predicted": "Funcții",
+        "tema": "Inecuații",
+        "domeniu": "Ecuații, inecuații și sisteme",
+        "difficulty": "2 - mediu"
+      },
+      {
+        "problem": "Distanta dintre doua localitati este de 200 km. Din aceste localitati in acelasi timp s-au pornit unul in intampinarea celuilalt un autoturism si un tractor, autoturismul avand viteza de 3 ori mai mare decat viteza tractorului. Determinati ",
+        "true": "Ecuații, inecuații și sisteme",
+        "predicted": "Rapoarte și proporții",
+        "tema": "Sisteme de ecuații",
+        "domeniu": "Ecuații, inecuații și sisteme",
+        "difficulty": "4 - avansat"
+      },
+      {
+        "problem": "X real: suma X + X/(X−1) = produsul lor",
+        "true": "Geometrie",
+        "predicted": "Calcul algebric",
+        "tema": "Geometrie 3D",
+        "domeniu": "Geometrie",
+        "difficulty": "3 - consolidare"
+      },
+      {
+        "problem": "Demonstrați că (2X⁴-2X²) este pătrat perfect pentru X∈ℕ\\{1}",
+        "true": "Calcul algebric",
+        "predicted": "Funcții",
+        "tema": "Calcul algebric",
+        "domeniu": "Calcul algebric",
+        "difficulty": "4 - avansat"
+      },
+      {
+        "problem": "Inecuația f(3)·f(x) < 3x pentru f(x) = x - 4",
+        "true": "Ecuații, inecuații și sisteme",
+        "predicted": "Funcții",
+        "tema": "Inecuații",
+        "domeniu": "Ecuații, inecuații și sisteme",
+        "difficulty": "3 - consolidare"
+      }
+    ]
+  }
+}

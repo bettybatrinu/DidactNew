@@ -1,0 +1,106 @@
+{
+  "task": "Neural student learning-state prediction",
+  "feature_columns": [
+    "time_spent_seconds",
+    "hint_count",
+    "attempt_count",
+    "is_correct",
+    "mistake_count",
+    "exercise_difficulty_encoded",
+    "previous_mastery",
+    "consecutive_errors",
+    "help_level_requested"
+  ],
+  "label_column": "learner_state",
+  "dataset_rows": 2200,
+  "train_rows": 1760,
+  "test_rows": 440,
+  "classes": [
+    "autonomie_buna",
+    "blocaj",
+    "progres",
+    "supraincarcare"
+  ],
+  "metrics": {
+    "accuracy": 0.9227272727272727,
+    "macro_f1": 0.9140483264012675,
+    "balanced_accuracy": 0.9234490877485713
+  },
+  "classification_report": {
+    "autonomie_buna": {
+      "precision": 0.8928571428571429,
+      "recall": 0.9615384615384616,
+      "f1-score": 0.9259259259259259,
+      "support": 26.0
+    },
+    "blocaj": {
+      "precision": 0.8870967741935484,
+      "recall": 0.873015873015873,
+      "f1-score": 0.88,
+      "support": 63.0
+    },
+    "progres": {
+      "precision": 0.9557522123893806,
+      "recall": 0.927038626609442,
+      "f1-score": 0.9411764705882353,
+      "support": 233.0
+    },
+    "supraincarcare": {
+      "precision": 0.8870967741935484,
+      "recall": 0.9322033898305084,
+      "f1-score": 0.9090909090909091,
+      "support": 118.0
+    },
+    "accuracy": 0.9227272727272727,
+    "macro avg": {
+      "precision": 0.9057007259084051,
+      "recall": 0.9234490877485713,
+      "f1-score": 0.9140483264012675,
+      "support": 440.0
+    },
+    "weighted avg": {
+      "precision": 0.9237933348410082,
+      "recall": 0.9227272727272727,
+      "f1-score": 0.9229111795315003,
+      "support": 440.0
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "autonomie_buna",
+      "blocaj",
+      "progres",
+      "supraincarcare"
+    ],
+    "matrix": [
+      [
+        25,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        55,
+        5,
+        3
+      ],
+      [
+        1,
+        6,
+        216,
+        10
+      ],
+      [
+        2,
+        1,
+        5,
+        110
+      ]
+    ]
+  },
+  "training_history": {
+    "epochs": 104,
+    "best_val_loss": 0.2559550106525421
+  }
+}

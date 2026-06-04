@@ -1,0 +1,14 @@
+# Lightweight requirements for Streamlit Cloud deployment
+# Use this instead of requirements.txt if tensorflow-cpu causes installation errors
+# The app will gracefully fall back to rule-based recommendations
+
+streamlit>=1.35.0
+pandas>=2.2.0
+numpy>=2.0.0
+openpyxl>=3.1.1
+scikit-learn>=1.3.2
+joblib>=1.3.2
+
+# Note: tensorflow-cpu is optional for this app
+# Without it, you get rule-based feedback instead of neural predictions
+# Both work equally well for the tutor experience
