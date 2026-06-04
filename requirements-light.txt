@@ -1,6 +1,6 @@
 # Lightweight requirements for Streamlit Cloud deployment
-# Use this instead of requirements.txt if tensorflow-cpu causes installation errors
-# The app will gracefully fall back to rule-based recommendations
+# This is an alias for the default requirements.txt used by deployment
+# Use requirements-full.txt for the TensorFlow-enabled environment
 
 streamlit>=1.35.0
 pandas>=2.2.0

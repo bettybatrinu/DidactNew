@@ -16,7 +16,7 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# Copy requirements and install (this will install tensorflow-cpu if available for the platform)
+# Copy requirements and install (default cloud-safe requirements)
 COPY requirements.txt ./requirements.txt
 RUN pip install --upgrade pip setuptools wheel \
     && pip install --no-cache-dir -r requirements.txt

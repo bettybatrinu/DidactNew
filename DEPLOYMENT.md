@@ -38,20 +38,9 @@ In **Manage App → Deployment** tab:
   ```
   This means a package version conflict. We're handling this now.
 
-### Solution 4: Alternative - Lighter Requirements
-If tensorflow-cpu still fails, use this lighter version:
-
-Edit `requirements.txt` to:
-```
-streamlit==1.35.0
-pandas==2.1.4
-numpy==1.24.3
-openpyxl==3.1.1
-scikit-learn==1.3.2
-joblib==1.3.2
-# Optional: remove tensorflow-cpu for faster cloud deployment
-# The app will still work with fallback to rule-based recommendations
-```
+### Solution 4: Default Cloud-safe Requirements
+The repository now uses a cloud-safe default `requirements.txt` that omits `tensorflow-cpu`.
+If you want the full TensorFlow-enabled setup, install `requirements-full.txt` instead.
 
 The app is designed to **gracefully degrade** - it works without TensorFlow!
 
@@ -81,7 +70,8 @@ All these are present ✓
 ## Performance Optimization
 
 The current setup uses:
-- `tensorflow-cpu` (smaller than GPU version)
+- `requirements.txt` as the default cloud-safe dependency list
+- Optional `requirements-full.txt` for TensorFlow-enabled neural support
 - Pre-trained models (no training on deployment)
 - Cached asset loading
 - Pandas operations (efficient)

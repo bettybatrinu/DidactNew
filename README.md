@@ -13,9 +13,9 @@ judeca onest succesul, nu doar să raportăm cifre după fapt:
 - **O4 — stabilitate:** raportăm macro-F1 CV ca medie ± deviație standard pe 5 folduri.
 - **KPI educațional:** rata de îmbunătățire a mastery-ului (Δmastery per exercițiu corect fără indicii) și raportul indicii/răspuns-corect, măsurate din `data/processed/student_interactions.csv`. Acest KPI există pentru că un macro-F1 bun nu garantează impact pedagogic.
 
-Quick Docker (Python 3.11 + TensorFlow)
--------------------------------------
-This repository includes a Dockerfile that builds on `python:3.11-slim` and installs `requirements.txt` (including `tensorflow-cpu`). To build and run the app locally in Docker:
+Quick Docker / Cloud-safe defaults
+----------------------------------
+This repository includes a Dockerfile that builds on `python:3.11-slim` and installs the default `requirements.txt` (cloud-safe, no TensorFlow). To build and run the app locally in Docker:
 
 ```bash
 ./run_docker.sh
@@ -23,8 +23,9 @@ This repository includes a Dockerfile that builds on `python:3.11-slim` and inst
 ```
 
 Notes:
-- The Docker image uses Python 3.11 to ensure TensorFlow CPU wheels are available.
-- If the package installation fails inside Docker, check the build output; common causes are unavailable TF wheels for the platform or missing system libraries. If that happens, try the lightweight requirements (`requirements-light.txt`) which omit TensorFlow.
+- The Docker image uses Python 3.11 by default.
+- For the TensorFlow-enabled environment, install `requirements-full.txt` instead.
+- If the package installation fails, check the build output; common causes are unavailable TensorFlow wheels or missing system libraries.
 
 
 ## Decizia despre dataset

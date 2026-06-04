@@ -27,11 +27,10 @@ Streamlit Cloud couldn't install your Python packages during deployment. This is
 #### Issue: TensorFlow is too large (most common)
 **Signal:** Log shows timeout or memory exceeded during `tensorflow-cpu` installation
 
-**Solution 1: Use Lightweight Requirements (Fastest)**
-- Edit the deployment settings
-- Change "App file" section → "Python requires" 
-- Use `requirements-light.txt` instead of `requirements.txt`
-- This removes TensorFlow but app still works perfectly with rule-based recommendations
+**Solution 1: Use the default cloud-safe requirements**
+- By default, the repo now uses a cloud-safe `requirements.txt`
+- If you need TensorFlow, use `requirements-full.txt`
+- This removes TensorFlow by default but the app still works perfectly with rule-based recommendations
 - Takes 1-2 minutes to deploy instead of 5-10
 
 **Solution 2: Wait Longer**
@@ -84,15 +83,15 @@ Both paths work equally well for students!
    git push
    ```
 
-3. **Deploy using lightweight requirements (safest)**
+3. **Deploy using the default cloud-safe requirements (safest)**
    - Streamlit Cloud interface:
      1. New App → Select repo
      2. Set main file: `app.py`
-     3. Advanced settings → Requirements file: `requirements-light.txt`
+     3. Advanced settings → Requirements file: `requirements.txt`
      4. Deploy
 
-4. **Or deploy with full requirements (recommended)**
-   - Same steps but use `requirements.txt`
+4. **Or deploy with full requirements (recommended for TensorFlow)**
+   - Same steps but use `requirements-full.txt`
    - Takes longer to build but gives neural predictions
 
 ### Monitoring Deployment
@@ -134,7 +133,7 @@ Provide these details when asking for help:
 1. **Full error message** from Manage App → Deployment log
 2. **When did it last work?** (if it worked before)
 3. **What did you just push?** (git log -1)
-4. **Are you using requirements.txt or requirements-light.txt?**
+4. **Are you using requirements.txt or requirements-full.txt?**
 
 ### Server Resources Used
 
@@ -147,8 +146,9 @@ Streamlit Cloud free tier: 1GB RAM ✓ Should be enough
 
 ### Important Files for Deployment
 
-- `requirements.txt` - Full version with TensorFlow
-- `requirements-light.txt` - Lightweight alternative
+- `requirements.txt` - Default cloud-safe requirements (no TensorFlow)
+- `requirements-full.txt` - Optional TensorFlow-enabled environment
+- `requirements-light.txt` - Alias for the default cloud-safe requirements
 - `.streamlit/config.toml` - Streamlit configuration ✓
 - `packages.txt` - System dependencies (graphviz)
 - `pyproject.toml` - Project metadata
@@ -158,4 +158,4 @@ All present and configured ✓
 ---
 
 **Last updated:** After neural model integration and cloud deployment optimization
-**Status:** Ready for deployment - use requirements-light.txt if you have issues with tensorflow-cpu
+**Status:** Ready for deployment - use requirements.txt (or requirements-light.txt alias) if you have issues with tensorflow-cpu
